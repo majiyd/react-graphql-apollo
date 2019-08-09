@@ -4,7 +4,12 @@
   "private": true,
   "homepage": "https://majiyd.github.io/github-graphql-vanilla-react",
   "dependencies": {
+    "apollo-cache-inmemory": "^1.6.2",
+    "apollo-client": "^2.6.3",
+    "apollo-link-http": "^1.5.15",
     "gh-pages": "^2.0.1",
+    "graphql": "^14.4.2",
+    "graphql-tag": "^2.10.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-scripts": "3.0.1"
