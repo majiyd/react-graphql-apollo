@@ -7,9 +7,9 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import './reset.css';
 import App from './views/App'
 
-const BASE_URL = "https://api.github.com/graphql/"
+const BASE_URL = "https://api.github.com/graphql"
 const httpLink = new HttpLink({
-  url: BASE_URL,
+  uri: BASE_URL,
   headers: {
     authorization: `Bearer ${process.env.REACT_APP_GITHUB_GRAPHQL_PERSONAL_ACCESS_TOKEN}`
   }
@@ -20,4 +20,9 @@ const client = new ApolloClient({
   cache
 })
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>, 
+  document.getElementById('root')
+);
