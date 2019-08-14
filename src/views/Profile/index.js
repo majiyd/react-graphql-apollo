@@ -2,29 +2,44 @@ import React from 'react';
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Loader from "../../components/Loader";
+import Repositories from "../Repositories"
 
-const GET_USER_PROFILE = gql`
+const GET_USER_REPOSITORIES = gql`
   {
     viewer{
-      login
-      name
-      url
+      repositories(
+        first: 5 
+        orderBy: {field: STARGAZERS, direction: DESC}
+      ) {
+        edges{
+          node {
+            id
+            name
+            url
+            primaryLanguage {
+              name
+            }
+            stargazers {
+              totalCount
+            }
+            viewerHasStarred
+          }
+        }
+      }
     }
   }
 `
 
 const Profile = () => (
-  <Query query={GET_USER_PROFILE}>
+  <Query query={GET_USER_REPOSITORIES}>
     {({data, loading}) => {
       const {viewer} = data
       if (loading || !viewer){
         return <Loader />
       }
-      return(
-        <div>
-          {viewer.url} {viewer.login}
-        </div>
-      )
+      
+      return <Repositories repositories={viewer.repositories} />
+      
     }}
   </Query>
 )
