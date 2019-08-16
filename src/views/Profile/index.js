@@ -3,6 +3,7 @@ import gql from "graphql-tag";
 import { Query } from "react-apollo";
 import Loader from "../../components/Loader";
 import Repositories from "../Repositories"
+import ErrorHandler from '../../components/Error';
 
 const GET_USER_REPOSITORIES = gql`
   {
@@ -16,6 +17,7 @@ const GET_USER_REPOSITORIES = gql`
             id
             name
             url
+            descriptionHTML
             primaryLanguage {
               name
             }
@@ -32,7 +34,10 @@ const GET_USER_REPOSITORIES = gql`
 
 const Profile = () => (
   <Query query={GET_USER_REPOSITORIES}>
-    {({data, loading}) => {
+    {({data, loading, error}) => {
+      if (error) {
+        return <ErrorHandler error={error} />
+      }
       const {viewer} = data
       if (loading || !viewer){
         return <Loader />

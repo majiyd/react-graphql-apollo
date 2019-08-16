@@ -13,6 +13,11 @@ const Repository = props => {
           />
         </h2>
       </div>
+      <div 
+        dangerouslySetInnerHTML={{
+          __html: props.node.descriptionHTML
+        }} 
+      />
     </div>
   )
 }
