@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from "react-apollo";
 import { ApolloClient } from "apollo-client";
 import { ApolloLink } from "apollo-link";
+import { RetryLink } from "apollo-link-retry";
 import { HttpLink } from "apollo-link-http";
 import { onError } from "apollo-link-error";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -26,7 +27,9 @@ const errorLink = onError(({graphQLErrors, networkError}) => {
   }
 })
 
-const link = ApolloLink.from([errorLink, httpLink])
+const retryLink = new RetryLink()
+
+const link = ApolloLink.from([retryLink, errorLink, httpLink])
 
 const cache = new InMemoryCache()
 const client = new ApolloClient({
