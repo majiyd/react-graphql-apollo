@@ -1,0 +1,9 @@
+.repositories{
+  display: flex;
+  height: 100vh;
+  flex: 1;
+  flex-direction: column;
+  margin: auto;
+  margin-top: 15%;
+  width: 70%;
+}

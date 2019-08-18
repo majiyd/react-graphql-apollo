@@ -1,6 +1,7 @@
 import React from 'react';
 import  gql  from "graphql-tag";
 import { Mutation } from "react-apollo";
+import styles from './Repository.module.css'
 import Link from "../Link";
 import Star from "../Star";
 
@@ -27,7 +28,7 @@ const UNSTAR_REPOSITORY = gql`
 
 const Repository = props => {
   return (
-    <div>
+    <div className={styles.repository}>
       <div>
         <h2>
           <Link href={props.node.url}>{props.node.name}</Link>

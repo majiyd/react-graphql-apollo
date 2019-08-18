@@ -1,0 +1,14 @@
+.repository{
+  background-color: #222825;
+  margin-bottom: 10px;
+  padding: 15px;
+  border-radius: 13px;
+}
+.repository:hover{
+  background-color: white;
+  color: #222823;
+  box-shadow: 0px 0px 31px 6px #fff3
+}
+.repository:hover a{
+  color: #222823;
+}
