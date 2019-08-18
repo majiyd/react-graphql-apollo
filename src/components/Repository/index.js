@@ -14,24 +14,53 @@ const STAR_REPOSITORY = gql`
     }
   }
 `
+const UNSTAR_REPOSITORY = gql`
+  mutation($id: ID!){
+    removeStar(input: {starrableId: $id}) {
+      starrable {
+        id
+        viewerHasStarred
+      }
+    }
+  }
+`
+
 const Repository = props => {
   return (
     <div>
       <div>
         <h2>
           <Link href={props.node.url}>{props.node.name}</Link>
-          <Mutation 
-            mutation={STAR_REPOSITORY} 
-            variables={{id: props.node.id}}
-          >
-            {(addStar, {data, loading, error}) => (
-              <span style={{cursor: "pointer"}} onClick={addStar}>
-                <Star 
-                  numberOfStarGazers={props.node.stargazers.totalCount} 
-                />
-              </span>
-            )}
-          </Mutation>
+          {props.node.viewerHasStarred ? (
+            <Mutation 
+              mutation={UNSTAR_REPOSITORY} 
+              variables={{id: props.node.id}}
+            >
+              {(removeStar, {data, loading, error}) => (
+                <span style={{cursor: "pointer"}} onClick={removeStar}>
+                  <Star 
+                    numberOfStarGazers={props.node.stargazers.totalCount}
+                    viewerHasStarred={props.node.viewerHasStarred}
+                  />
+                </span>
+              )}
+            </Mutation>
+          ) : (
+            <Mutation 
+              mutation={STAR_REPOSITORY} 
+              variables={{id: props.node.id}}
+            >
+              {(addStar, {data, loading, error}) => (
+                <span style={{cursor: "pointer"}} onClick={addStar}>
+                  <Star 
+                    numberOfStarGazers={props.node.stargazers.totalCount}
+                    viewerHasStarred={props.node.viewerHasStarred}
+                  />
+                </span>
+              )}
+            </Mutation>
+          )}
+          
         </h2>
       </div>
       <div
