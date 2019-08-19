@@ -2,9 +2,11 @@ import React from 'react';
 import  gql  from "graphql-tag";
 import { Mutation } from "react-apollo";
 import styles from './Repository.module.css'
+import REPOSITORY_FRAGMENT from './fragments'
 import Link from "../Link";
 import Star from "../Star";
 
+// star reporsitory graphql query
 const STAR_REPOSITORY = gql`
   mutation($id: ID!){
     addStar(input: {starrableId: $id}) {
@@ -15,6 +17,7 @@ const STAR_REPOSITORY = gql`
     }
   }
 `
+// unstar repository graphql query
 const UNSTAR_REPOSITORY = gql`
   mutation($id: ID!){
     removeStar(input: {starrableId: $id}) {
@@ -25,17 +28,71 @@ const UNSTAR_REPOSITORY = gql`
     }
   }
 `
+//update function to be called to update other parts of the ui after addStar mutation happens
+const updateAddStar = (client, {
+  data: {addStar: {starrable: {id} }}
+}) => {
+  const repository = client.readFragment({
+    id: `Repository:${id}`,
+    fragment: REPOSITORY_FRAGMENT
+  })
+  
+  const totalCount = repository.stargazers.totalCount + 1
 
+  client.writeFragment({
+    id: `Repository:${id}`,
+    fragment: REPOSITORY_FRAGMENT,
+    data: {
+      ...repository,
+      stargazers: {
+        ...repository.stargazers,
+        totalCount
+      }
+    }
+  })
+}
+
+//updater function for when removeStar mutation occurs
+const updateRemoveStar = (client, {
+  data: {removeStar: {starrable: {id}}}
+}) => {
+  //read from apollo cache
+  const repository = client.readFragment({
+    id: `Repository:${id}`,
+    fragment: REPOSITORY_FRAGMENT
+  })
+  //repository contains everything about repository, perform update operation here
+  const totalCount = repository.stargazers.totalCount - 1
+
+  //write back to apollo cache
+  client.writeFragment({
+    id: `Repository:${id}`,
+    fragment: REPOSITORY_FRAGMENT,
+    data: {
+      ...repository,
+      stargazers: {
+        ...repository.stargazers,
+        totalCount
+      }
+    }
+  })
+}
+
+
+// repository component
 const Repository = props => {
   return (
     <div className={styles.repository}>
       <div>
         <h2>
           <Link href={props.node.url}>{props.node.name}</Link>
+          {/* check if viewer has starred and toggle star or removeStar  */}
           {props.node.viewerHasStarred ? (
+            // if viewer has starred show unstar repository *
             <Mutation 
               mutation={UNSTAR_REPOSITORY} 
               variables={{id: props.node.id}}
+              update={updateRemoveStar}
             >
               {(removeStar, {data, loading, error}) => (
                 <span style={{cursor: "pointer"}} onClick={removeStar}>
@@ -50,6 +107,7 @@ const Repository = props => {
             <Mutation 
               mutation={STAR_REPOSITORY} 
               variables={{id: props.node.id}}
+              update={updateAddStar} //add updater function
             >
               {(addStar, {data, loading, error}) => (
                 <span style={{cursor: "pointer"}} onClick={addStar}>
@@ -73,4 +131,5 @@ const Repository = props => {
   );
 }
 
+export {REPOSITORY_FRAGMENT}
 export default Repository

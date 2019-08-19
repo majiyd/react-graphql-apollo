@@ -1,9 +1,12 @@
 import React from 'react';
 import gql from "graphql-tag";
 import { Query } from "react-apollo";
+import {REPOSITORY_FRAGMENT} from "../../components/Repository";
 import Loader from "../../components/Loader";
-import Repositories from "../Repositories"
 import ErrorHandler from '../../components/Error';
+import Repositories from "../Repositories"
+
+
 
 const GET_USER_REPOSITORIES = gql`
   {
@@ -14,22 +17,13 @@ const GET_USER_REPOSITORIES = gql`
       ) {
         edges{
           node {
-            id
-            name
-            url
-            descriptionHTML
-            primaryLanguage {
-              name
-            }
-            stargazers {
-              totalCount
-            }
-            viewerHasStarred
+            ...repository
           }
         }
       }
     }
   }
+  ${REPOSITORY_FRAGMENT}
 `
 
 const Profile = () => (
