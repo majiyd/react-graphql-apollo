@@ -1,23 +1,9 @@
 import React from 'react';
-import  gql  from "graphql-tag";
-import { Mutation } from "react-apollo";
 import styles from './Repository.module.css'
 import REPOSITORY_FRAGMENT from './fragments'
 import Link from "../Link";
-import Star from "../Star";
+import {Star, Unstar} from "../Star";
 
-
-// unstar repository graphql query
-const UNSTAR_REPOSITORY = gql`
-  mutation($id: ID!){
-    removeStar(input: {starrableId: $id}) {
-      starrable {
-        id
-        viewerHasStarred
-      }
-    }
-  }
-`
 //update function to be called to update other parts of the ui after addStar mutation happens
 const updateAddStar = (client, {
   data: {addStar: {starrable: {id} }}
@@ -79,20 +65,11 @@ const Repository = props => {
           {/* check if viewer has starred and toggle star or removeStar  */}
           {props.node.viewerHasStarred ? (
             // if viewer has starred show unstar repository *
-            <Mutation 
-              mutation={UNSTAR_REPOSITORY} 
-              variables={{id: props.node.id}}
-              update={updateRemoveStar}
-            >
-              {(removeStar, {data, loading, error}) => (
-                <span style={{cursor: "pointer"}} onClick={removeStar}>
-                  <Star 
-                    numberOfStarGazers={props.node.stargazers.totalCount}
-                    viewerHasStarred={props.node.viewerHasStarred}
-                  />
-                </span>
-              )}
-            </Mutation>
+            <Unstar 
+              numberOfStarGazers={props.node.stargazers.totalCount}
+              viewerHasStarred={props.node.viewerHasStarred}
+              id={props.node.id}
+            />
           ) : ( 
             <Star 
               numberOfStarGazers={props.node.stargazers.totalCount}
