@@ -1,5 +1,4 @@
 import React from 'react';
-// import styles from './Star.module.css'
 
 const Star = ({numberOfStarGazers, viewerHasStarred}) => {
   return(

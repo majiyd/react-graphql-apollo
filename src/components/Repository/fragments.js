@@ -13,6 +13,10 @@ const REPOSITORY_FRAGMENT = gql`
       totalCount
     }
     viewerHasStarred
+    watchers {
+      totalCount
+    }
+    viewerSubscription
   }
 `;
 
