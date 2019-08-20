@@ -6,17 +6,7 @@ import REPOSITORY_FRAGMENT from './fragments'
 import Link from "../Link";
 import Star from "../Star";
 
-// star reporsitory graphql query
-const STAR_REPOSITORY = gql`
-  mutation($id: ID!){
-    addStar(input: {starrableId: $id}) {
-      starrable {
-        id
-        viewerHasStarred
-      }
-    }
-  }
-`
+
 // unstar repository graphql query
 const UNSTAR_REPOSITORY = gql`
   mutation($id: ID!){
@@ -103,21 +93,12 @@ const Repository = props => {
                 </span>
               )}
             </Mutation>
-          ) : (
-            <Mutation 
-              mutation={STAR_REPOSITORY} 
-              variables={{id: props.node.id}}
-              update={updateAddStar} //add updater function
-            >
-              {(addStar, {data, loading, error}) => (
-                <span style={{cursor: "pointer"}} onClick={addStar}>
-                  <Star 
-                    numberOfStarGazers={props.node.stargazers.totalCount}
-                    viewerHasStarred={props.node.viewerHasStarred}
-                  />
-                </span>
-              )}
-            </Mutation>
+          ) : ( 
+            <Star 
+              numberOfStarGazers={props.node.stargazers.totalCount}
+              viewerHasStarred={props.node.viewerHasStarred}
+              id={props.node.id}
+            />
           )}
           
         </h2>
@@ -130,6 +111,7 @@ const Repository = props => {
     </div>
   );
 }
+
 
 export {REPOSITORY_FRAGMENT}
 export default Repository
