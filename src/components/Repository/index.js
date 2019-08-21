@@ -52,6 +52,7 @@ const updateAddStar = (client, {
   })
 }
 
+
 //updater function for when removeStar mutation occurs
 const updateRemoveStar = (client, {
   data: {removeStar: {starrable: {id}}}
@@ -93,6 +94,16 @@ const Repository = props => {
               mutation={UNSTAR_REPOSITORY} 
               variables={{id: props.node.id}}
               update={updateRemoveStar}
+              optimisticResponse={{
+                removeStar: {
+                  __typename: 'Mutation',
+                  starrable: {
+                    __typename: 'Repository',
+                    id: props.node.id,
+                    viewerHasStarred: false
+                  }
+                }
+              }}
             >
               {(removeStar, {data, loading, error}) => (
                 <span style={{cursor: "pointer"}} onClick={removeStar}>
@@ -108,6 +119,16 @@ const Repository = props => {
               mutation={STAR_REPOSITORY} 
               variables={{id: props.node.id}}
               update={updateAddStar} //add updater function
+              optimisticResponse={{
+                addStar: {
+                  __typename: 'Mutation',
+                  starrable: {
+                    __typename: 'Repository',
+                    id: props.node.id,
+                    viewerHasStarred: true
+                  }
+                }
+              }}
             >
               {(addStar, {data, loading, error}) => (
                 <span style={{cursor: "pointer"}} onClick={addStar}>

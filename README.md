@@ -1,6 +1,8 @@
 This project is based on part 4 of @rwieruch [GraphQL Tutorial For Beginners](https://www.robinwieruch.de/graphql-tutorial/). 
 
 ### It is a GraphQL client making use of Apollo
+Note: branch `query-mutation-with-hoc` contains code implementation using Higher Order Component
+
 
 To view the app in your browser can clone the repo 
 
