@@ -21,6 +21,16 @@ const Unstar = ({mutate, numberOfStarGazers,  id}) => {
         mutate({
           variables: {
             id: id
+          },
+          optimisticResponse: {
+            removeStar: {
+              __typename: 'Mutation',
+              starrable: {
+                __typename: 'Repository',
+                id,
+                viewerHasStarred: false
+              }
+            }
           }
         })
       }}

@@ -24,7 +24,9 @@ const Star = ({mutate, numberOfStarGazers,  id}) => {
         },
         optimisticResponse: {
           addStar: {
+            __typename: 'Mutation',
             starrable: {
+              __typename: 'Repository',
               id,
               viewerHasStarred: true
             }
