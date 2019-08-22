@@ -21,6 +21,14 @@ const Star = ({mutate, numberOfStarGazers,  id}) => {
       mutate({
         variables: {
           id: id
+        },
+        optimisticResponse: {
+          addStar: {
+            starrable: {
+              id,
+              viewerHasStarred: true
+            }
+          }
         }
       })
     }} 
