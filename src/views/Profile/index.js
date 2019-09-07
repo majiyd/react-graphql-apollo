@@ -9,16 +9,21 @@ import Repositories from "../Repositories"
 
 
 const GET_USER_REPOSITORIES = gql`
-  {
+  query($cursor: String){
     viewer{
       repositories(
         first: 5 
         orderBy: {field: STARGAZERS, direction: DESC}
+        after: $cursor
       ) {
         edges{
           node {
             ...repository
           }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
         }
       }
     }
@@ -27,17 +32,24 @@ const GET_USER_REPOSITORIES = gql`
 `
 
 const Profile = () => (
-  <Query query={GET_USER_REPOSITORIES}>
-    {({data, loading, error}) => {
+  <Query 
+    query={GET_USER_REPOSITORIES}
+    notifyOnNetworkStatusChange={true}
+  >
+    {({data, loading, error, fetchMore}) => {
+      {/* fetchMore is graphql inbuilt pagination handler */}
       if (error) {
         return <ErrorHandler error={error} />
       }
       const {viewer} = data
-      if (loading || !viewer){
+      if (loading && !viewer){
         return <Loader />
       }
       
-      return <Repositories repositories={viewer.repositories} />
+      return <Repositories 
+        repositories={viewer.repositories} 
+        fetchMore={fetchMore}
+      />
       
     }}
   </Query>
