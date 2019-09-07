@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Repositories.module.css'
 import Repository from "../../components/Repository";
+import Loader from '../../components/Loader';
 
 const updateQuery = (previousResult, {fetchMoreResult}) => {
   if (!fetchMoreResult){
@@ -22,23 +23,27 @@ const updateQuery = (previousResult, {fetchMoreResult}) => {
     }
   }
 }
-const Repositories = (props) => {
+const Repositories = ({repositories, loading, fetchMore}) => {
   return(
     <div className={styles.repositories}>
-      {props.repositories.edges.map(repository => (
+      {repositories.edges.map(repository => (
         <Repository key={repository.node.id} {...repository}/>
       ))}
-      {props.repositories.pageInfo.hasNextPage && (
-        <button onClick={() => {
-          props.fetchMore({
-            variables: {
-              cursor: props.repositories.pageInfo.endCursor
-            },
-            updateQuery
-          })
-        }}>
-          More Repositories
-        </button>
+      {loading ? (
+        <Loader />
+      ) : (
+        repositories.pageInfo.hasNextPage && (
+          <button onClick={() => {
+            fetchMore({
+              variables: {
+                cursor: repositories.pageInfo.endCursor
+              },
+              updateQuery
+            })
+          }}>
+            More Repositories
+          </button> 
+        )
       )}
     </div>
   )
