@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Repositories.module.css'
 import Repository from "../../components/Repository";
 import Loader from '../../components/Loader';
+import Button from "../../components/Button";
 
 const updateQuery = (previousResult, {fetchMoreResult}) => {
   if (!fetchMoreResult){
@@ -33,7 +34,7 @@ const Repositories = ({repositories, loading, fetchMore}) => {
         <Loader />
       ) : (
         repositories.pageInfo.hasNextPage && (
-          <button onClick={() => {
+          <Button handleClick={() => {
             fetchMore({
               variables: {
                 cursor: repositories.pageInfo.endCursor
@@ -42,7 +43,7 @@ const Repositories = ({repositories, loading, fetchMore}) => {
             })
           }}>
             More Repositories
-          </button> 
+          </Button> 
         )
       )}
     </div>
