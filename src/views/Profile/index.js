@@ -7,7 +7,7 @@ import ErrorHandler from '../../components/Error';
 import Repositories from "../Repositories"
 
 const GET_USER_REPOSITORIES = gql`
-  query($cursor: String){
+  query ($cursor: String) {
     user(login: "rwieruch"){
       repositories(
         first: 5 
@@ -33,20 +33,55 @@ const GET_USER_REPOSITORIES = gql`
  * 2 move  {data, loading, error} to Profile component Argument
  * 3 create higher order component*/
 
-const Profile = ({data, loading, error}) => {
+const Profile = ({loading, error, user, onFetchMore}) => {
   if (error) {
     return <ErrorHandler error={error} />
   }
-  const {user} = data
-  const viewer = user
   
-  if (loading || !viewer){
+  if (loading || !user){
     return <Loader />
   }
   
-  return <Repositories repositories={viewer.repositories} />
+  return <Repositories 
+    repositories={user.repositories} 
+    fetchMore={onFetchMore}
+    loading={loading}
+    hasNextPage={user.repositories.pageInfo.hasNextPage}
+  />
   
 }
 
+const OPTIONS = {
+  props({data: {loading, user, fetchMore}}){
+    return {
+      loading,
+      user,
+      onFetchMore: () => {
+        return fetchMore({
+          query: GET_USER_REPOSITORIES,
+          variables: {
+            cursor: user.repositories.pageInfo.endCursor
+          },
+          updateQuery: (previousResult, {fetchMoreResult}) => {
+            return {
+              ...previousResult,
+              user: {
+                ...previousResult.user,
+                repositories: {
+                  ...previousResult.user.repositories,
+                  ...fetchMoreResult.user.repositories,
+                  edges: [
+                    ...previousResult.user.repositories.edges,
+                    ...fetchMoreResult.user.repositories.edges
+                  ]
+                }
+              }
+            }
+          }
+        })
+      }
+    }
+  }
+}
 
-export default graphql(GET_USER_REPOSITORIES)(Profile)
+export default graphql(GET_USER_REPOSITORIES, OPTIONS)(Profile)
