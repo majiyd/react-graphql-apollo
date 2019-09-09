@@ -22,16 +22,7 @@ const Star = ({mutate, numberOfStarGazers,  id}) => {
         variables: {
           id: id
         },
-        optimisticResponse: {
-          addStar: {
-            __typename: 'Mutation',
-            starrable: {
-              __typename: 'Repository',
-              id,
-              viewerHasStarred: true
-            }
-          }
-        }
+        
       })
     }} 
     style={{
@@ -45,6 +36,16 @@ const Star = ({mutate, numberOfStarGazers,  id}) => {
 
 const STAR_REPOSITORY_OPTIONS = {
   options: {
+    optimisticResponse: ({id}) => ({
+      addStar: {
+        __typename: 'Mutation',
+        starrable: {
+          __typename: 'Repository',
+          id,
+          viewerHasStarred: true
+        }
+      }
+    }),
     update: (client, {data: {addStar: {starrable: {id}}}}) => {
       const repository = client.readFragment({
         id: `Repository:${id}`,
