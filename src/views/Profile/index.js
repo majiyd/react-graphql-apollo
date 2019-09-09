@@ -38,7 +38,7 @@ const Profile = ({loading, error, user, onFetchMore}) => {
     return <ErrorHandler error={error} />
   }
   
-  if (loading || !user){
+  if (loading && !user){
     return <Loader />
   }
   
@@ -81,6 +81,9 @@ const OPTIONS = {
         })
       }
     }
+  },
+  options: {
+    notifyOnNetworkStatusChange: true
   }
 }
 

@@ -1,16 +1,24 @@
 import React from 'react';
 import styles from './Repositories.module.css'
 import Repository from "../../components/Repository";
+import Loader from '../../components/Loader';
 
-const Repositories = (props) => {
+const Repositories = ({repositories, loading, fetchMore, hasNextPage}) => {
   return(
     <div className={styles.repositories}>
-      {props.repositories.edges.map(repository => (
+      {repositories.edges.map(repository => (
         <Repository key={repository.node.id} {...repository}/>
       ))}
-      <button onClick={props.fetchMore}>
-        More Repositories
-      </button>
+      {loading ? (
+        <Loader />
+      ) : (
+        hasNextPage && (
+          <button style={{display: "inline"}} onClick={fetchMore}>
+            More Repositories
+          </button>
+        )
+      )}
+      
     </div>
   )
 }
