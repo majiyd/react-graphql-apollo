@@ -7,16 +7,21 @@ import ErrorHandler from '../../components/Error';
 import Repositories from "../Repositories"
 
 const GET_USER_REPOSITORIES = gql`
-  {
+  query($cursor: String){
     user(login: "rwieruch"){
       repositories(
         first: 5 
         orderBy: {field: STARGAZERS, direction: DESC}
+        after: $cursor
       ) {
         edges{
           node {
             ...repository
           }
+        }
+        pageInfo {
+          endCursor
+          hasNextPage
         }
       }
     }

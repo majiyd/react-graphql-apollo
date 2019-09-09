@@ -8,6 +8,9 @@ const Repositories = (props) => {
       {props.repositories.edges.map(repository => (
         <Repository key={repository.node.id} {...repository}/>
       ))}
+      <button onClick={props.fetchMore}>
+        More Repositories
+      </button>
     </div>
   )
 }
