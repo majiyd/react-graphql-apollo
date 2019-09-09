@@ -50,34 +50,53 @@ const Profile = ({loading, error, user, onFetchMore}) => {
   />
   
 }
-
+/** options = {props(props and that you'll require){
+ *  return {
+ *    props, fetched data, etc,
+ *    prop function that trigger fetchmore: () => {
+ *      return fetchMore ({
+ *       @NOTE fetchMore is the built in apollo feature that handles fetching more data
+ *        query,
+ *        variables,
+ *        @note updateQuery is apollo inbuilt feature for handling updates after successful fetch operation.
+ *        updateQuery: (previousResult, {fetchMoreResult}) => {
+ *          return {data structure}
+ *        }
+ *    })
+ *    }
+ *  }
+ * }}
+ 
+*/
+const UPDATE_QUERY = (previousResult, {fetchMoreResult}) => {
+  return {
+    ...previousResult,
+    user: {
+      ...previousResult.user,
+      repositories: {
+        ...previousResult.user.repositories,
+        ...fetchMoreResult.user.repositories,
+        edges: [
+          ...previousResult.user.repositories.edges,
+          ...fetchMoreResult.user.repositories.edges
+        ]
+      }
+    }
+  }
+}
 const OPTIONS = {
-  props({data: {loading, user, fetchMore}}){
+  props({data: {loading, error, user, fetchMore}}){
     return {
       loading,
       user,
+      error,
       onFetchMore: () => {
         return fetchMore({
           query: GET_USER_REPOSITORIES,
           variables: {
             cursor: user.repositories.pageInfo.endCursor
           },
-          updateQuery: (previousResult, {fetchMoreResult}) => {
-            return {
-              ...previousResult,
-              user: {
-                ...previousResult.user,
-                repositories: {
-                  ...previousResult.user.repositories,
-                  ...fetchMoreResult.user.repositories,
-                  edges: [
-                    ...previousResult.user.repositories.edges,
-                    ...fetchMoreResult.user.repositories.edges
-                  ]
-                }
-              }
-            }
-          }
+          updateQuery: UPDATE_QUERY
         })
       }
     }
