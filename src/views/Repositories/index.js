@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Repositories.module.css'
 import Repository from "../../components/Repository";
 import Loader from '../../components/Loader';
-import Button from '../../components/Button';
+import FetchMore from '../../components/FetchMore';
 
 const Repositories = ({repositories, loading, fetchMore, hasNextPage}) => {
   return(
@@ -14,9 +14,9 @@ const Repositories = ({repositories, loading, fetchMore, hasNextPage}) => {
         <Loader />
       ) : (
         hasNextPage &&(
-          <Button handleClick={fetchMore}> 
-            More Repositories
-          </Button>          
+          <FetchMore fetchMore={fetchMore}>
+            Repositories
+          </FetchMore>      
         )
       )}
       
