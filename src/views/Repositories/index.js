@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Repositories.module.css'
 import Repository from "../../components/Repository";
 import Loader from '../../components/Loader';
+import Button from '../../components/Button';
 
 const Repositories = ({repositories, loading, fetchMore, hasNextPage}) => {
   return(
@@ -12,10 +13,10 @@ const Repositories = ({repositories, loading, fetchMore, hasNextPage}) => {
       {loading ? (
         <Loader />
       ) : (
-        hasNextPage && (
-          <button style={{display: "inline"}} onClick={fetchMore}>
+        hasNextPage &&(
+          <Button handleClick={fetchMore}> 
             More Repositories
-          </button>
+          </Button>          
         )
       )}
       
