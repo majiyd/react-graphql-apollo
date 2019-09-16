@@ -40,7 +40,17 @@ const ADD_STAR_OPTIONS = {
   props: ({mutate}) => ({
     addStar: id => {
       mutate({
-        variables: {id}
+        variables: {id},
+        optimisticResponse: {
+          addStar: {
+            __typename: 'Mutation',
+            starrable: {
+              id: id,
+              __typename: 'Repository',
+              viewerHasStarred: true
+            }
+          }
+        }
       })
     }
   })
@@ -49,7 +59,17 @@ const REMOVE_STAR_OPTIONS = {
   props: ({mutate}) => ({
     removeStar: id => {
       mutate({
-        variables: {id}
+        variables: {id},
+        optimisticResponse: {
+          removeStar: {
+            __typename: 'Mutation',
+            starrable: {
+              id: id,
+              __typename: 'Repository',
+              viewerHasStarred: false
+            }
+          }
+        }
       })
     }
   })
