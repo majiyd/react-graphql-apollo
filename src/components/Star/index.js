@@ -3,10 +3,13 @@ import React from 'react';
 
 
 
-const Star = ({viewerHasStarred, numberOfStarGazers,  id}) => {
+const Star = ({viewerHasStarred, numberOfStarGazers,  id, addStar, removeStar}) => {
   if (viewerHasStarred ){
     return(
       <span 
+        onClick={()=>{
+          removeStar(id)
+        }}
         style={{
           marginLeft: 5,
           cursor: "pointer"
@@ -18,6 +21,9 @@ const Star = ({viewerHasStarred, numberOfStarGazers,  id}) => {
   }
   return(
     <span 
+      onClick={()=>{
+        addStar(id)
+      }}
       style={{
         marginLeft: 5,
         cursor: "pointer"

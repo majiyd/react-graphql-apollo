@@ -13,6 +13,7 @@
     "gh-pages": "^2.0.1",
     "graphql": "^14.4.2",
     "graphql-tag": "^2.10.1",
+    "graphql.macro": "^1.4.2",
     "react": "^16.8.6",
     "react-apollo": "^3.0.0",
     "react-dom": "^16.8.6",

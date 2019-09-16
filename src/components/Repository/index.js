@@ -1,8 +1,14 @@
 import React from 'react';
-import styles from './Repository.module.css'
+import { graphql } from 'react-apollo';
+import {loader} from "graphql.macro"
+import {flowRight as compose} from 'lodash'
 import REPOSITORY_FRAGMENT from './fragments'
+import styles from './Repository.module.css'
 import Link from "../Link";
 import Star from "../Star";
+
+const ADD_STAR = loader('./star.graphql')
+const REMOVE_STAR = loader('./removeStar.graphql')
 
 // repository component
 const Repository = props => {
@@ -15,21 +21,9 @@ const Repository = props => {
             numberOfStarGazers={props.node.stargazers.totalCount}
             viewerHasStarred={props.node.viewerHasStarred}
             id={props.node.id}
+            addStar={props.addStar}
+            removeStar={props.removeStar}
           />
-          {/* {props.node.viewerHasStarred ? (
-            // if viewer has starred show unstar repository *
-            <Unstar 
-              numberOfStarGazers={props.node.stargazers.totalCount}
-              viewerHasStarred={props.node.viewerHasStarred}
-              id={props.node.id}
-            />
-          ) : ( 
-            <Star 
-              numberOfStarGazers={props.node.stargazers.totalCount}
-              viewerHasStarred={props.node.viewerHasStarred}
-              id={props.node.id}
-            />
-          )} */}
           
         </h2>
       </div>
@@ -42,6 +36,26 @@ const Repository = props => {
   );
 }
 
-
+const ADD_STAR_OPTIONS = {
+  props: ({mutate}) => ({
+    addStar: id => {
+      mutate({
+        variables: {id}
+      })
+    }
+  })
+}
+const REMOVE_STAR_OPTIONS = {
+  props: ({mutate}) => ({
+    removeStar: id => {
+      mutate({
+        variables: {id}
+      })
+    }
+  })
+}
 export {REPOSITORY_FRAGMENT}
-export default Repository
+export default compose(
+  graphql(ADD_STAR, ADD_STAR_OPTIONS),
+  graphql(REMOVE_STAR, REMOVE_STAR_OPTIONS)
+)(Repository)

@@ -1,0 +1,9 @@
+mutation($id: ID!){
+  addStar(input: {starrableId: $id}) {
+    starrable {
+      id
+      viewerHasStarred
+    }
+  }
+}
+
