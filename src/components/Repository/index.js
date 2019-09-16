@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './Repository.module.css'
 import REPOSITORY_FRAGMENT from './fragments'
 import Link from "../Link";
-import {Star, Unstar} from "../Star";
+import Star from "../Star";
 
 // repository component
 const Repository = props => {
@@ -11,8 +11,12 @@ const Repository = props => {
       <div>
         <h2>
           <Link href={props.node.url}>{props.node.name}</Link>
-          {/* check if viewer has starred and toggle star or removeStar  */}
-          {props.node.viewerHasStarred ? (
+          <Star 
+            numberOfStarGazers={props.node.stargazers.totalCount}
+            viewerHasStarred={props.node.viewerHasStarred}
+            id={props.node.id}
+          />
+          {/* {props.node.viewerHasStarred ? (
             // if viewer has starred show unstar repository *
             <Unstar 
               numberOfStarGazers={props.node.stargazers.totalCount}
@@ -25,7 +29,7 @@ const Repository = props => {
               viewerHasStarred={props.node.viewerHasStarred}
               id={props.node.id}
             />
-          )}
+          )} */}
           
         </h2>
       </div>
