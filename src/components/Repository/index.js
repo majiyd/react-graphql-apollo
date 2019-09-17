@@ -41,6 +41,26 @@ const ADD_STAR_OPTIONS = {
     addStar: id => {
       mutate({
         variables: {id},
+        update: client => {
+          const repository  = client.readFragment({
+            id: `Repository:${id}`,
+            fragment: REPOSITORY_FRAGMENT
+          })
+
+          const totalCount = repository.stargazers.totalCount + 1
+
+          client.writeFragment({
+            id: `Repository:${id}`,
+            fragment: REPOSITORY_FRAGMENT,
+            data: {
+              ...repository,
+              stargazers: {
+                ...repository.stargazers,
+                totalCount
+              }
+            }
+          })
+        },
         optimisticResponse: {
           addStar: {
             __typename: 'Mutation',
@@ -60,6 +80,26 @@ const REMOVE_STAR_OPTIONS = {
     removeStar: id => {
       mutate({
         variables: {id},
+        update: client => {
+          const repository = client.readFragment({
+            id: `Repository:${id}`,
+            fragment: REPOSITORY_FRAGMENT,
+          })
+
+          const totalCount = repository.stargazers.totalCount - 1
+
+          client.writeFragment({
+            id: `Repository:${id}`,
+            fragment: REPOSITORY_FRAGMENT,
+            data: {
+              ...repository,
+              stargazers: {
+                ...repository.stargazers,
+                totalCount
+              }
+            }
+          })
+        },
         optimisticResponse: {
           removeStar: {
             __typename: 'Mutation',
