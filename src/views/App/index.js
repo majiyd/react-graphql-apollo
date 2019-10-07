@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {BrowserRouter as Router, Route} from 'react-router-dom'
 import Profile from "../Profile";
+import User from '../User';
 import * as routes from '../../constants/routes'
 import Navigation from '../../components/Navigation';
 
@@ -16,11 +17,7 @@ class App extends Component {
         ></Route>
         <Route 
           path={routes.USER}
-          component={()=>{
-            return(
-              <div>user</div>
-            )
-          }}
+          component={User}
         ></Route>
       </Router>
     );
