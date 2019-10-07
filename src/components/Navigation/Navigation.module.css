@@ -1,0 +1,11 @@
+.navbar{
+  background-color: white;
+  padding: 10px;
+}
+.navlink{
+  padding: 0 5px;
+  color: #222328;
+}
+.navlink:hover{
+  text-decoration: underline
+}
