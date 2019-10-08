@@ -30,6 +30,7 @@ const User = ({user}) => {
             repositories={user.repositories}
             fetchMore={fetchMore}
             loading={loading}
+            entry={'user'}
           />
         );
       }}
