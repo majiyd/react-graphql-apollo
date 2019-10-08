@@ -1,4 +1,6 @@
 .button{
   width: max-content;
   padding: 3%;
+  cursor: pointer;
+  margin: auto;
 }
