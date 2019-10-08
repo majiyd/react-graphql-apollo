@@ -1,6 +1,7 @@
 .button{
-  width: max-content;
   padding: 3%;
   cursor: pointer;
-  margin: auto;
+}
+.submitButton{
+  padding: 6px 10px
 }

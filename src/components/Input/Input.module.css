@@ -1,0 +1,8 @@
+.inputWrapper{
+  flex: 1;
+  border: 1px solid #222823;
+  margin: 0 10px;
+  padding-left: 5px;
+  display: flex;
+  max-width: 400px;
+}

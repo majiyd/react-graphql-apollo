@@ -1,11 +1,19 @@
 import React from 'react'
 import styles from "./UserSearch.module.css";
 import Button from '../Button';
+import Input from '../Input';
 
 const UserSearch = () => {
   return (
     <div className={styles.userSearch}>
-      <Button ><div style={{padding: "1px 5px"}}>Search</div></Button>
+      <form className={styles.form}>
+        <Input 
+          placeholder={"Search Users"}
+        />
+        <Button type={"submit"}>
+          Search
+        </Button>
+      </form>
     </div>
   )
 }

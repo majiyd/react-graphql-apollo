@@ -2,10 +2,14 @@
   background-color: white;
   padding: 10px;
   color: #222328;
+  display: flex;
+  align-items: center;
+  min-height: 50px;
 }
 .navlink{
   padding: 0 5px;
   color: #222328;
+  margin: 0;
 }
 .navlink:hover{
   text-decoration: underline
