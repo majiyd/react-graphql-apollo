@@ -1,0 +1,16 @@
+#import '../../components/Repository/fragments.graphql'
+query($user: String!, $cursor: String){
+  user(login: $user){
+    repositories(first: 5, after: $cursor){
+      edges{
+        node{
+          ...repository
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}

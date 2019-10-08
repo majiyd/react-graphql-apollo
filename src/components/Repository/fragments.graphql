@@ -1,0 +1,14 @@
+
+fragment repository on Repository{
+  id
+  name
+  url
+  descriptionHTML
+  primaryLanguage {
+    name
+  }
+  stargazers {
+    totalCount
+  }
+  viewerHasStarred
+}

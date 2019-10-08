@@ -37,7 +37,7 @@ const Profile = () => (
     notifyOnNetworkStatusChange={true}
   >
     {({data, loading, error, fetchMore}) => {
-      {/* fetchMore is graphql inbuilt pagination handler */}
+      /* fetchMore is graphql inbuilt pagination handler */
       if (error) {
         return <ErrorHandler error={error} />
       }

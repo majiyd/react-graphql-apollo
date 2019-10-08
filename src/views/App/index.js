@@ -17,7 +17,11 @@ class App extends Component {
         ></Route>
         <Route 
           path={routes.USER}
-          component={User}
+          component={()=>(
+            <User 
+              user={'rwieruch'}
+            />
+          )}
         ></Route>
       </Router>
     );
