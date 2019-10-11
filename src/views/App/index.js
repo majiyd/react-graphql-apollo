@@ -6,10 +6,20 @@ import * as routes from '../../constants/routes'
 import Navigation from '../../components/Navigation';
 
 class App extends Component {
+  state = {
+    user: 'rwieruch'
+  }
+  onUserSearch = value => {
+    this.setState({user: value})
+  }
   render() { 
+    const user =  this.state.user
     return (
       <Router>
-        <Navigation />
+        <Navigation 
+          user={user}
+          onUserSearch={this.onUserSearch}
+        />
         <Route 
           exact
           path={routes.PROFILE}
@@ -19,7 +29,7 @@ class App extends Component {
           path={routes.USER}
           component={()=>(
             <User 
-              user={'rwieruch'}
+              user={user}
             />
           )}
         ></Route>
