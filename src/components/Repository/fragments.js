@@ -17,6 +17,9 @@ const REPOSITORY_FRAGMENT = gql`
       totalCount
     }
     viewerSubscription
+    owner{
+      login
+    }
   }
 `;
 

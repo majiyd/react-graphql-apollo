@@ -1,0 +1,16 @@
+query ($repositoryOwner: String!, $repositoryName: String!){
+  repository(name: $repositoryName, owner: $repositoryOwner){
+    issues(first: 5){
+      edges{
+        node{
+          id
+          number
+          state
+          title
+          url
+          bodyHTML
+        }
+      }
+    }
+  }
+}
